@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>fig_research_framework</title>
+<style>
+  html, body {
+    margin: 0;
+    width: 1600px;
+    height: 900px;
+    overflow: hidden;
+    background: white;
+  }
+  svg {
+    display: block;
+    width: 1600px;
+    height: 900px;
+  }
+</style>
+</head>
+<body>
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#52616f"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#3c7a58"/>
+    </marker>
+    <style>
+      text { font-family: "PingFang SC", "Heiti SC", "Noto Sans CJK SC", Arial, sans-serif; }
+      .small { fill: #6b7280; font-size: 18px; }
+      .label { fill: #1f2933; font-size: 23px; font-weight: 650; }
+      .micro { fill: #6b7280; font-size: 16px; }
+    </style>
+  </defs>
+  <rect width="100%" height="100%" fill="white"/>
+<rect x="70" y="52" width="1460" height="100" rx="22" fill="#eaf3fb" stroke="#9bbbd5" stroke-width="2"/>
+<text x="800" y="88" fill="#3b6f9f" font-size="26" font-weight="750" text-anchor="middle">认知控制权分布编码方案</text>
+<text x="800" y="122" fill="#6b7280" font-size="19" font-weight="400" text-anchor="middle">四个决策节点 × H/A/J 状态，T 作为动态切换指标</text>
+<line x1="800" y1="152" x2="800" y2="198" stroke="#3c7a58" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+<rect x="120" y="215" width="390" height="118" rx="18" fill="#eaf3fb" stroke="#3b6f9f" stroke-width="2.3"/>
+<text x="315" y="258" fill="#3b6f9f" font-size="25" font-weight="750" text-anchor="middle">RQ1 模式识别</text>
+<text x="315" y="290" fill="#1f2933" font-size="17" font-weight="400" text-anchor="middle"><tspan x="315" dy="0">认知控制权在四节点上的分布</tspan><tspan x="315" dy="22">呈现哪些典型类型？</tspan></text>
+<rect x="605" y="215" width="390" height="118" rx="18" fill="#fbf4df" stroke="#9a7330" stroke-width="2.3"/>
+<text x="800" y="258" fill="#9a7330" font-size="25" font-weight="750" text-anchor="middle">RQ2 效果差异</text>
+<text x="800" y="290" fill="#1f2933" font-size="17" font-weight="400" text-anchor="middle"><tspan x="800" dy="0">不同协作类型在设计产出质量</tspan><tspan x="800" dy="22">和设计思维提升上是否不同？</tspan></text>
+<rect x="1090" y="215" width="390" height="118" rx="18" fill="#edf7f0" stroke="#3c7a58" stroke-width="2.3"/>
+<text x="1285" y="258" fill="#3c7a58" font-size="25" font-weight="750" text-anchor="middle">RQ3 个体关联</text>
+<text x="1285" y="290" fill="#1f2933" font-size="17" font-weight="400" text-anchor="middle"><tspan x="1285" dy="0">哪些个体特征与协作类型</tspan><tspan x="1285" dy="22">存在系统性关联？</tspan></text>
+<line x1="510" y1="274" x2="590" y2="274" stroke="#3c7a58" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+<line x1="995" y1="274" x2="1075" y2="274" stroke="#3c7a58" stroke-width="3" fill="none" marker-end="url(#arrow-green)"/>
+<text x="800" y="370" fill="#b85c6a" font-size="20" font-weight="650" text-anchor="middle">H1 是类型学前提，H2-H6 依赖 RQ1 的分类结果</text>
+<path d="M315 333 C315 390 800 390 800 430" stroke="#b85c6a" stroke-width="2.5" fill="none" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+<path d="M800 333 C800 390 800 390 800 430" stroke="#b85c6a" stroke-width="2.5" fill="none" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+<path d="M1285 333 C1285 390 800 390 800 430" stroke="#b85c6a" stroke-width="2.5" fill="none" stroke-dasharray="8 7" marker-end="url(#arrow)"/>
+<rect x="120" y="450" width="390" height="220" rx="18" fill="#eaf3fb" stroke="#3b6f9f" stroke-width="2"/>
+<text x="150" y="492" fill="#3b6f9f" font-size="23" font-weight="800" text-anchor="start">H1</text>
+<text x="315" y="524" fill="#1f2933" font-size="23" font-weight="750" text-anchor="middle">类型存在性</text>
+<text x="315" y="573" fill="#1f2933" font-size="18" font-weight="400" text-anchor="middle"><tspan x="315" dy="0">至少存在三种可区分类型</tspan><tspan x="315" dy="24">H-dominant / A-dominant / J-dominant</tspan></text>
+<rect x="565" y="450" width="470" height="220" rx="18" fill="#fbf4df" stroke="#9a7330" stroke-width="2"/>
+<text x="595" y="492" fill="#9a7330" font-size="23" font-weight="800" text-anchor="start">H2-H4</text>
+<text x="800" y="524" fill="#1f2933" font-size="23" font-weight="750" text-anchor="middle">类型效果差异</text>
+<text x="800" y="573" fill="#1f2933" font-size="18" font-weight="400" text-anchor="middle"><tspan x="800" dy="0">H2 发散阶段：J &gt; A，新颖性</tspan><tspan x="800" dy="24">H3 收敛阶段：H &gt; A，可行性与完整性</tspan><tspan x="800" dy="24">H4 A 型速度更快，但后测较低</tspan></text>
+<rect x="1090" y="450" width="390" height="220" rx="18" fill="#edf7f0" stroke="#3c7a58" stroke-width="2"/>
+<text x="1120" y="492" fill="#3c7a58" font-size="23" font-weight="800" text-anchor="start">H5-H6</text>
+<text x="1285" y="524" fill="#1f2933" font-size="23" font-weight="750" text-anchor="middle">个体因素与动态切换</text>
+<text x="1285" y="573" fill="#1f2933" font-size="18" font-weight="400" text-anchor="middle"><tspan x="1285" dy="0">H5 自我效能 / AI经验 / SRL</tspan><tspan x="1285" dy="24">H6 探索型认知风格对应更高 T 频率</tspan></text>
+<rect x="250" y="730" width="1100" height="86" rx="18" fill="#f4f6f8" stroke="#d7dde5" stroke-width="2"/>
+<text x="800" y="763" fill="#6b7280" font-size="22" font-weight="700" text-anchor="middle">实证链条</text>
+<text x="800" y="797" fill="#1f2933" font-size="24" font-weight="700" text-anchor="middle">识别类型 → 比较后果 → 解释个体条件</text>
+</svg>
+</body>
+</html>

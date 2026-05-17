@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case.1_ 从论文到视觉内容的 Agent 协作流程设计</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: #F7F4ED;
+    color: #17202A;
+    font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #DDD5C8;
+    background: color-mix(in srgb, #F7F4ED 94%, transparent);
+    backdrop-filter: blur(12px);
+  }
+  .topbar-inner {
+    width: min(1120px, calc(100vw - 40px));
+    margin: 0 auto;
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+  }
+  .brand {
+    color: #2C3E50;
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .nav {
+    display: flex;
+    gap: 15px;
+    color: #70675D;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .nav a {
+    text-decoration: none;
+  }
+  .nav a:hover {
+    color: #2C3E50;
+  }
+  .hero,
+  .section-inner {
+    width: min(1120px, calc(100vw - 40px));
+    margin: 0 auto;
+  }
+  .hero {
+    padding: 82px 0 72px;
+  }
+  .eyebrow,
+  .section-kicker {
+    color: #8B4513;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  h1,
+  h2 {
+    margin: 0;
+    color: #17202A;
+    font-family: Georgia, "Times New Roman", "Songti SC", serif;
+    letter-spacing: 0;
+  }
+  h1 {
+    max-width: 920px;
+    margin-top: 18px;
+    font-size: clamp(42px, 6.2vw, 76px);
+    line-height: 1.08;
+  }
+  h2 {
+    margin-top: 10px;
+    max-width: 900px;
+    font-size: clamp(30px, 4vw, 52px);
+    line-height: 1.16;
+  }
+  .hero-lede,
+  .section-lede {
+    max-width: 760px;
+    color: #46515B;
+    font-size: 18px;
+  }
+  .hero-lede {
+    margin: 26px 0 0;
+  }
+  .hero-points {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 4px 11px;
+    border: 1px solid #D6CCBE;
+    border-radius: 999px;
+    background: #FFFDF8;
+    color: #5E574F;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .section {
+    border-top: 1px solid #DDD5C8;
+    scroll-margin-top: 70px;
+  }
+  .section-inner {
+    padding: 72px 0;
+  }
+  .section-lede {
+    margin: 18px 0 0;
+  }
+  .flow {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .flow-card {
+    min-height: 178px;
+    padding: 18px;
+    border: 1px solid #D9D0C2;
+    border-radius: 10px;
+    background: #FFFDF8;
+  }
+  .flow-index {
+    color: #8B4513;
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .flow-title {
+    margin-top: 12px;
+    color: #2C3E50;
+    font-size: 20px;
+    font-weight: 850;
+    line-height: 1.3;
+  }
+  .flow-copy {
+    margin-top: 8px;
+    color: #5E574F;
+    font-size: 14px;
+  }
+  .two-col {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 16px;
+  }
+  .panel {
+    border: 1px solid #D9D0C2;
+    border-radius: 10px;
+    background: #FFFDF8;
+    padding: 22px;
+  }
+  .panel h3 {
+    margin: 0;
+    color: #2C3E50;
+    font-size: 21px;
+    line-height: 1.35;
+  }
+  .meta {
+    margin-top: 16px;
+    border-top: 1px solid #E8DFD2;
+  }
+  .meta-row {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid #EEE7DC;
+  }
+  .meta-label {
+    color: #887D72;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .meta-value {
+    color: #24313C;
+    font-size: 15px;
+  }
+  .quote {
+    margin-top: 16px;
+    padding: 18px 20px;
+    border-left: 4px solid #8B4513;
+    background: #FBF8F1;
+    color: #3C4650;
+    font-size: 15px;
+  }
+  .compact-grid {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .compact-card {
+    min-height: 180px;
+    padding: 20px;
+    border: 1px solid #D9D0C2;
+    border-radius: 10px;
+    background: #FFFDF8;
+  }
+  .compact-card h3 {
+    margin: 0;
+    color: #2C3E50;
+    font-size: 20px;
+    line-height: 1.35;
+  }
+  .compact-card p {
+    margin: 10px 0 0;
+    color: #5E574F;
+    font-size: 15px;
+  }
+  .visual-grid {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .visual-card {
+    min-height: 184px;
+    padding: 18px;
+    border: 1px solid #D9D0C2;
+    border-radius: 10px;
+    background: #FFFDF8;
+  }
+  .visual-card svg {
+    width: 100%;
+    height: 54px;
+    margin-bottom: 12px;
+  }
+  .visual-card h3 {
+    margin: 0;
+    color: #2C3E50;
+    font-size: 17px;
+    line-height: 1.35;
+  }
+  .visual-card p {
+    margin: 8px 0 0;
+    color: #5E574F;
+    font-size: 14px;
+  }
+  .agent-section {
+    border-top: 0;
+    background:
+      radial-gradient(circle at 16px 16px, rgba(255,253,248,0.13) 1.4px, transparent 1.6px) 0 0 / 28px 28px,
+      linear-gradient(135deg, #101316 0%, #171A1E 56%, #111417 100%);
+    color: #F7F4ED;
+  }
+  .agent-section h2 {
+    color: #F7F4ED;
+  }
+  .agent-section .section-kicker {
+    color: #E0A766;
+  }
+  .agent-section .section-lede {
+    color: #D8CEC0;
+  }
+  .agent-map {
+    margin-top: 34px;
+    border: 1px solid rgba(247,244,237,0.18);
+    border-radius: 16px;
+    background: rgba(18, 22, 26, 0.88);
+    overflow-x: auto;
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+  }
+  .agent-map svg {
+    display: block;
+    width: 100%;
+    min-width: 940px;
+    height: auto;
+  }
+  .agent-mobile-flow {
+    display: none;
+    margin-top: 28px;
+  }
+  .mobile-node {
+    position: relative;
+    padding: 17px 18px;
+    border: 1px solid rgba(247,244,237,0.18);
+    border-radius: 14px;
+    background: rgba(255,253,248,0.06);
+  }
+  .mobile-node + .mobile-node {
+    margin-top: 28px;
+  }
+  .mobile-node:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: 28px;
+    bottom: -29px;
+    width: 2px;
+    height: 28px;
+    background: rgba(247,244,237,0.32);
+  }
+  .mobile-node-label {
+    color: #E0A766;
+    font-size: 11px;
+    font-weight: 850;
+  }
+  .mobile-node h3 {
+    margin: 7px 0 0;
+    color: #FFFDF8;
+    font-size: 20px;
+    line-height: 1.3;
+  }
+  .mobile-node p {
+    margin: 6px 0 0;
+    color: #D8CEC0;
+    font-size: 13px;
+  }
+  .mobile-chips,
+  .mobile-branches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .mobile-chip,
+  .mobile-branch {
+    border: 1px solid rgba(247,244,237,0.16);
+    border-radius: 999px;
+    background: rgba(255,253,248,0.07);
+    color: #D8CEC0;
+    font-size: 12px;
+    font-weight: 750;
+    padding: 4px 9px;
+  }
+  .mobile-branch.is-output {
+    border-color: rgba(105,183,155,0.45);
+    color: #A9DCC9;
+  }
+  .mobile-branch.is-feedback {
+    border-color: rgba(224,167,102,0.5);
+    color: #F1C996;
+  }
+  .map-frame {
+    fill: rgba(255,253,248,0.04);
+    stroke: rgba(247,244,237,0.18);
+  }
+  .map-node {
+    fill: #20242A;
+    stroke: #7F8490;
+    stroke-width: 1.5;
+  }
+  .map-node-strong {
+    fill: #28232D;
+    stroke: #CFC7D9;
+    stroke-width: 2;
+  }
+  .map-output {
+    fill: #17282A;
+    stroke: #69B79B;
+    stroke-width: 1.6;
+  }
+  .map-human {
+    fill: #2A241E;
+    stroke: #E0A766;
+    stroke-width: 1.6;
+  }
+  .map-label {
+    fill: #A9AAB2;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+  .map-label-green {
+    fill: #69B79B;
+  }
+  .map-label-amber {
+    fill: #E0A766;
+  }
+  .map-route-chip {
+    fill: rgba(18, 22, 26, 0.9);
+    stroke-width: 1;
+  }
+  .map-route-chip.is-green {
+    stroke: rgba(105,183,155,0.55);
+  }
+  .map-route-chip.is-amber {
+    stroke: rgba(224,167,102,0.55);
+  }
+  .map-title {
+    fill: #FFFDF8;
+    font-size: 18px;
+    font-weight: 850;
+    letter-spacing: 0;
+  }
+  .map-copy {
+    fill: #C9C2B8;
+    font-size: 12px;
+    letter-spacing: 0;
+  }
+  .map-small {
+    fill: #A9AAB2;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  .map-tool-title {
+    fill: #FFFDF8;
+    font-size: 12px;
+    font-weight: 850;
+    text-anchor: middle;
+    letter-spacing: 0;
+  }
+  .map-tool-copy {
+    fill: #A9AAB2;
+    font-size: 9.5px;
+    text-anchor: middle;
+    letter-spacing: 0;
+  }
+  .map-edge {
+    fill: none;
+    stroke: #8C909A;
+    stroke-width: 2;
+  }
+  .map-edge-soft {
+    fill: none;
+    stroke: #8C909A;
+    stroke-width: 1.7;
+    stroke-dasharray: 7 8;
+  }
+  .map-edge-yes {
+    fill: none;
+    stroke: #69B79B;
+    stroke-width: 2.2;
+  }
+  .map-edge-feedback {
+    fill: none;
+    stroke: #E0A766;
+    stroke-width: 1.9;
+    stroke-dasharray: 8 7;
+  }
+  .map-chip {
+    fill: rgba(255,253,248,0.07);
+    stroke: rgba(247,244,237,0.16);
+  }
+  .agent-controls {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .control-card {
+    padding: 16px 18px;
+    border: 1px solid rgba(247,244,237,0.18);
+    border-radius: 12px;
+    background: rgba(255,253,248,0.06);
+  }
+  .control-card strong {
+    display: block;
+    color: #FFFDF8;
+    font-size: 17px;
+  }
+  .control-card span {
+    display: block;
+    margin-top: 5px;
+    color: #D8CEC0;
+    font-size: 13px;
+  }
+  .output-gallery {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+  .output-card {
+    border: 1px solid #D9D0C2;
+    border-radius: 12px;
+    background: #FFFDF8;
+    overflow: hidden;
+  }
+  .output-card figure {
+    margin: 0;
+  }
+  .output-card img {
+    width: 100%;
+    background: #FAFAF8;
+  }
+  .output-caption {
+    min-height: 116px;
+    padding: 15px 17px 17px;
+    border-top: 1px solid #E7DED1;
+  }
+  .output-caption strong {
+    display: block;
+    color: #2C3E50;
+    font-size: 15px;
+  }
+  .output-caption span {
+    display: block;
+    margin-top: 4px;
+    color: #6F675E;
+    font-size: 13px;
+  }
+  .method {
+    background: #17202A;
+    color: #F7F4ED;
+  }
+  .method h2 {
+    color: #F7F4ED;
+  }
+  .method .section-lede {
+    color: #D8CEC0;
+  }
+  .method .section-kicker {
+    color: #C98D55;
+  }
+  .principles {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .principle {
+    padding: 20px;
+    border: 1px solid #46515B;
+    border-radius: 10px;
+    background: #202B36;
+  }
+  .principle strong {
+    display: block;
+    color: #FFFDF8;
+    font-size: 21px;
+  }
+  .principle span {
+    display: block;
+    margin-top: 8px;
+    color: #D8CEC0;
+    font-size: 15px;
+  }
+  .footer {
+    border-top: 1px solid #DDD5C8;
+    color: #746B60;
+    font-size: 13px;
+  }
+  .footer .section-inner {
+    padding: 26px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  @media (max-width: 980px) {
+    .flow,
+    .compact-grid,
+    .visual-grid,
+    .agent-controls,
+    .principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+    .output-gallery {
+      grid-template-columns: repeat(3, minmax(245px, 1fr));
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner {
+      min-height: auto;
+      padding: 12px 0;
+      display: block;
+    }
+    .nav {
+      margin-top: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .hero {
+      padding: 50px 0 54px;
+    }
+    h1 {
+      font-size: clamp(38px, 13vw, 52px);
+    }
+    .hero-lede,
+    .section-lede {
+      font-size: 16px;
+    }
+    .section-inner {
+      padding: 56px 0;
+    }
+    .section {
+      scroll-margin-top: 94px;
+    }
+    .flow,
+    .compact-grid,
+    .visual-grid,
+    .agent-controls,
+    .principles {
+      grid-template-columns: 1fr;
+    }
+    .meta-row {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .output-gallery {
+      display: flex;
+      gap: 14px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+    }
+    .agent-map {
+      display: none;
+    }
+    .agent-mobile-flow {
+      display: block;
+    }
+    .output-card {
+      min-width: 280px;
+    }
+    .footer .section-inner {
+      display: block;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">Case.1 / Agent 协作流程设计</div>
+    <nav class="nav" aria-label="页面导航">
+      <a href="#flow">写作流程</a>
+      <a href="#agent">Agent 流程</a>
+      <a href="#input">输入</a>
+      <a href="#structure">结构</a>
+      <a href="#visual">图形化</a>
+      <a href="#output">输出</a>
+      <a href="#method">结论</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Work with AI / AIUX Case Study</div>
+    <h1>Case.1_ 从论文到视觉内容的 Agent 协作流程设计</h1>
+    <p class="hero-lede">用一个论文长图案例，展示 agent 如何参与写作流程：先明确输入，再组织信息，随后做图形化转译，最后形成可传播的视觉输出。</p>
+    <div class="hero-points">
+      <span class="pill">流程先行</span>
+      <span class="pill">信息准确</span>
+      <span class="pill">表达简洁</span>
+      <span class="pill">输出可见</span>
+    </div>
+  </section>
+
+  <section class="section" id="flow">
+    <div class="section-inner">
+      <div class="section-kicker">01 / 写作流程</div>
+      <h2>先展示流程，再按流程展示内容。</h2>
+      <p class="section-lede">这页 case 的讲法不是堆结果，而是让听众先理解 agent 的协作路径。</p>
+      <div class="flow" aria-label="从论文到视觉内容的写作流程">
+        <article class="flow-card">
+          <div class="flow-index">Step 01</div>
+          <div class="flow-title">输入</div>
+          <div class="flow-copy">论文题目、链接、目标受众和输出形式。</div>
+        </article>
+        <article class="flow-card">
+          <div class="flow-index">Step 02</div>
+          <div class="flow-title">提炼</div>
+          <div class="flow-copy">把论文变成可审阅的重点和初稿。</div>
+        </article>
+        <article class="flow-card">
+          <div class="flow-index">Step 03</div>
+          <div class="flow-title">结构化</div>
+          <div class="flow-copy">按讲解顺序组织成模块。</div>
+        </article>
+        <article class="flow-card">
+          <div class="flow-index">Step 04</div>
+          <div class="flow-title">图形化</div>
+          <div class="flow-copy">选择对比图、流程图、结果卡和取舍图。</div>
+        </article>
+        <article class="flow-card">
+          <div class="flow-index">Step 05</div>
+          <div class="flow-title">输出</div>
+          <div class="flow-copy">生成手机长图和可交互界面。</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section agent-section" id="agent">
+    <div class="section-inner">
+      <div class="section-kicker">02 / Agent Backstage</div>
+      <h2>Agent 内部流程：把模糊输入变成可交付内容。</h2>
+      <p class="section-lede">这张图展示协作后台：agent 负责组织材料、调用能力和生成草案；人保留关键判断，决定准确性、取舍和传播目标。</p>
+      <div class="agent-map" aria-label="Agent 内部协作流程图">
+        <svg viewBox="0 0 1120 420" role="img" aria-labelledby="agent-map-title agent-map-desc">
+          <title id="agent-map-title">从论文输入到视觉输出的 Agent 内部协作流程</title>
+          <desc id="agent-map-desc">流程从用户输入开始，进入 Agent 工作区，经过上下文记忆、阅读提取、结构规划和图形化转译等能力调用，再通过判断点决定输出长图、可交互界面，或回到人工反馈。</desc>
+          <defs>
+            <marker id="arrow-main" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#8C909A"/>
+            </marker>
+            <marker id="arrow-yes" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#69B79B"/>
+            </marker>
+            <marker id="arrow-feedback" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#E0A766"/>
+            </marker>
+            <filter id="map-shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000000" flood-opacity="0.24"/>
+            </filter>
+          </defs>
+
+          <rect class="map-frame" x="24" y="24" width="1072" height="372" rx="22"/>
+          <g transform="translate(0 -52)">
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-node" x="64" y="152" width="170" height="134" rx="18"/>
+            <text class="map-label" x="86" y="178">TRIGGER / 输入触发</text>
+            <circle cx="94" cy="205" r="13" fill="#263E45" stroke="#3AA6B5" stroke-width="1.5"/>
+            <path d="M89 205h10M89 211h16M89 199h12" stroke="#3AA6B5" stroke-width="1.8" stroke-linecap="round"/>
+            <text class="map-title" x="86" y="244">论文 + 目标</text>
+            <text class="map-copy" x="86" y="268">材料、受众、输出形式</text>
+          </g>
+
+          <path class="map-edge" d="M234 219 H318" marker-end="url(#arrow-main)"/>
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-node-strong" x="318" y="138" width="300" height="146" rx="18"/>
+            <text class="map-label" x="342" y="172">AGENT WORKSPACE / 协作中枢</text>
+            <text class="map-title" x="342" y="210">Agent 工作区</text>
+            <text class="map-copy" x="342" y="236">理解材料 · 组织结构 · 生成草案</text>
+            <rect class="map-chip" x="342" y="252" width="70" height="22" rx="11"/>
+            <text class="map-small" x="360" y="267">上下文</text>
+            <rect class="map-chip" x="424" y="252" width="70" height="22" rx="11"/>
+            <text class="map-small" x="448" y="267">工具</text>
+            <rect class="map-chip" x="506" y="252" width="78" height="22" rx="11"/>
+            <text class="map-small" x="528" y="267">生成</text>
+          </g>
+
+          <path class="map-edge" d="M618 219 H698" marker-end="url(#arrow-main)"/>
+
+          <g>
+            <path class="map-edge-soft" d="M384 284 C350 306 324 316 286 324" marker-end="url(#arrow-main)"/>
+            <path class="map-edge-soft" d="M450 284 C436 307 428 318 420 326" marker-end="url(#arrow-main)"/>
+            <path class="map-edge-soft" d="M516 284 C538 306 552 318 570 326" marker-end="url(#arrow-main)"/>
+            <path class="map-edge-soft" d="M580 284 C632 306 670 318 720 324" marker-end="url(#arrow-main)"/>
+
+            <circle cx="270" cy="352" r="38" fill="#1D2327" stroke="#7F8490" stroke-width="1.5"/>
+            <path d="M258 328h24M258 337h20M258 346h24" stroke="#8C909A" stroke-width="1.8" stroke-linecap="round"/>
+            <text class="map-tool-title" x="270" y="361">上下文记忆</text>
+            <text class="map-tool-copy" x="270" y="377">背景 / 历史反馈</text>
+
+            <circle cx="420" cy="352" r="38" fill="#1D2327" stroke="#7F8490" stroke-width="1.5"/>
+            <path d="M406 324h22l8 8v26h-30z M428 324v9h8 M412 341h18 M412 351h14" fill="none" stroke="#8C909A" stroke-width="1.8" stroke-linecap="round"/>
+            <text class="map-tool-title" x="420" y="366">阅读提取</text>
+            <text class="map-tool-copy" x="420" y="382">重点 / 证据 / 数字</text>
+
+            <circle cx="570" cy="352" r="38" fill="#1D2327" stroke="#7F8490" stroke-width="1.5"/>
+            <path d="M570 324v12M550 347h40M550 347v13M590 347v13M570 347v13" stroke="#8C909A" stroke-width="1.8" stroke-linecap="round"/>
+            <rect x="560" y="335" width="20" height="15" rx="4" fill="none" stroke="#8C909A" stroke-width="1.8"/>
+            <text class="map-tool-title" x="570" y="366">结构规划</text>
+            <text class="map-tool-copy" x="570" y="382">顺序 / 模块</text>
+
+            <circle cx="720" cy="352" r="38" fill="#1D2327" stroke="#7F8490" stroke-width="1.5"/>
+            <rect x="704" y="324" width="14" height="14" rx="3" fill="none" stroke="#8C909A" stroke-width="1.8"/>
+            <rect x="724" y="324" width="14" height="14" rx="3" fill="none" stroke="#8C909A" stroke-width="1.8"/>
+            <rect x="704" y="345" width="34" height="13" rx="3" fill="none" stroke="#8C909A" stroke-width="1.8"/>
+            <text class="map-tool-title" x="720" y="369">图形化转译</text>
+            <text class="map-tool-copy" x="720" y="385">对比图 / 流程图</text>
+          </g>
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-node" x="698" y="150" width="154" height="142" rx="16"/>
+            <text class="map-label" x="720" y="178">DECISION / 判断点</text>
+            <path d="M750 204h52M750 224h52M750 244h52" stroke="#69B79B" stroke-width="6.5" stroke-linecap="round"/>
+            <circle cx="776" cy="224" r="6" fill="#171A1E"/>
+            <text class="map-title" x="718" y="266">是否讲清楚？</text>
+            <text class="map-copy" x="718" y="286">准确、简洁、可传播</text>
+          </g>
+
+          <path class="map-edge-yes" d="M852 200 C884 168 896 160 920 160" marker-end="url(#arrow-yes)"/>
+          <path class="map-edge-yes" d="M852 252 C884 288 896 300 920 300" marker-end="url(#arrow-yes)"/>
+          <path class="map-edge-feedback" d="M804 292 C818 322 832 344 850 360" marker-end="url(#arrow-feedback)"/>
+          <g>
+            <rect class="map-route-chip is-green" x="858" y="176" width="58" height="22" rx="11"/>
+            <text class="map-label map-label-green" x="870" y="192">可输出</text>
+          </g>
+          <g>
+            <rect class="map-route-chip is-amber" x="814" y="324" width="68" height="22" rx="11"/>
+            <text class="map-label map-label-amber" x="826" y="340">需反馈</text>
+          </g>
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-output" x="920" y="118" width="160" height="86" rx="16"/>
+            <text class="map-label" x="942" y="152">OUTPUT</text>
+            <text class="map-title" x="942" y="182">长图</text>
+            <text class="map-copy" x="920" y="236">适合手机阅读</text>
+          </g>
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-output" x="920" y="258" width="160" height="86" rx="16"/>
+            <text class="map-label" x="942" y="292">OUTPUT</text>
+            <text class="map-title" x="942" y="322">可交互界面</text>
+            <text class="map-copy" x="920" y="374">适合分享讲解</text>
+          </g>
+
+          <g filter="url(#map-shadow)">
+            <rect class="map-human" x="850" y="356" width="230" height="66" rx="16"/>
+            <text class="map-label" x="874" y="384">HUMAN REVIEW / 人工反馈</text>
+            <text class="map-copy" x="874" y="408">改标题 / 删内容 / 调顺序 / 校准</text>
+          </g>
+
+          <path class="map-edge-feedback" d="M850 404 V420 H318 V284" marker-end="url(#arrow-feedback)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="agent-mobile-flow" aria-label="移动端 Agent 内部协作流程">
+        <article class="mobile-node">
+          <div class="mobile-node-label">TRIGGER / 输入触发</div>
+          <h3>论文 + 目标</h3>
+          <p>材料、受众、输出形式先被定义。</p>
+        </article>
+        <article class="mobile-node">
+          <div class="mobile-node-label">AGENT WORKSPACE / 协作中枢</div>
+          <h3>理解材料，组织结构，生成草案</h3>
+          <div class="mobile-chips">
+            <span class="mobile-chip">上下文记忆</span>
+            <span class="mobile-chip">阅读提取</span>
+            <span class="mobile-chip">结构规划</span>
+            <span class="mobile-chip">图形化转译</span>
+          </div>
+        </article>
+        <article class="mobile-node">
+          <div class="mobile-node-label">DECISION / 判断点</div>
+          <h3>是否讲清楚？</h3>
+          <p>检查准确性、简洁度和可传播性。</p>
+          <div class="mobile-branches">
+            <span class="mobile-branch is-output">可输出：长图 / 可交互界面</span>
+            <span class="mobile-branch is-feedback">需反馈：改标题 / 删内容 / 调顺序</span>
+          </div>
+        </article>
+        <article class="mobile-node">
+          <div class="mobile-node-label">HUMAN REVIEW / 人工反馈</div>
+          <h3>人的判断回流到下一轮生成</h3>
+          <p>修改不是补丁，而是下一轮 agent 工作的约束。</p>
+        </article>
+      </div>
+      <div class="agent-controls">
+        <div class="control-card">
+          <strong>输入被定义</strong>
+          <span>先固定论文、受众和输出形式，避免 agent 在模糊目标里发散。</span>
+        </div>
+        <div class="control-card">
+          <strong>判断被显性化</strong>
+          <span>准确性、简洁度、可传播性成为流程里的检查点。</span>
+        </div>
+        <div class="control-card">
+          <strong>反馈能回流</strong>
+          <span>人的修改不是补丁，而是下一轮生成的约束。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="input">
+    <div class="section-inner">
+      <div class="section-kicker">03 / Step 01 输入</div>
+      <h2>输入要清楚：论文是什么，要给谁看，最后做成什么。</h2>
+      <div class="two-col">
+        <article class="panel">
+          <h3>论文输入</h3>
+          <div class="meta">
+            <div class="meta-row">
+              <div class="meta-label">论文</div>
+              <div class="meta-value">Attention Is All You Need</div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">链接</div>
+              <div class="meta-value"><a href="https://arxiv.org/abs/1706.03762">arxiv.org/abs/1706.03762</a></div>
+            </div>
+            <div class="meta-row">
+              <div class="meta-label">输出</div>
+              <div class="meta-value">手机竖屏论文长图，用于分享课和社交传播。</div>
+            </div>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>agent 的第一步</h3>
+          <p class="quote">先把论文从“技术文本”转成“可讲述对象”：它解决什么问题、为什么重要、结果如何、哪里有局限。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="structure">
+    <div class="section-inner">
+      <div class="section-kicker">04 / Step 02-03 提炼与结构化</div>
+      <h2>写作不是压缩全文，而是建立讲解顺序。</h2>
+      <div class="compact-grid">
+        <article class="compact-card">
+          <h3>为什么该关心</h3>
+          <p>先解释问题背景：为什么 RNN 的顺序计算会限制效率和远距离依赖。</p>
+        </article>
+        <article class="compact-card">
+          <h3>他们怎么做</h3>
+          <p>再解释方法：注意力机制如何替代传统序列结构。</p>
+        </article>
+        <article class="compact-card">
+          <h3>结果与启发</h3>
+          <p>最后收束：结果、局限、启发和论文基本信息。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="visual">
+    <div class="section-inner">
+      <div class="section-kicker">05 / Step 04 图形化转译</div>
+      <h2>图形化不是装饰，而是降低理解成本。</h2>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <svg viewBox="0 0 220 56" aria-label="对比图示意">
+            <rect x="8" y="12" width="72" height="32" rx="6" fill="#EFEAE1" stroke="#B8AEA0"/>
+            <rect x="140" y="12" width="72" height="32" rx="6" fill="#E7EDF3" stroke="#9AAABC"/>
+            <line x1="88" y1="28" x2="132" y2="28" stroke="#8B4513" stroke-width="2"/>
+            <polygon points="132,28 124,24 124,32" fill="#8B4513"/>
+          </svg>
+          <h3>有差异，画对比图</h3>
+          <p>RNN 顺序等待 vs. Transformer 并行关注。</p>
+        </article>
+        <article class="visual-card">
+          <svg viewBox="0 0 220 56" aria-label="流程图示意">
+            <circle cx="34" cy="28" r="13" fill="#F6EFE7" stroke="#8B4513"/>
+            <circle cx="110" cy="28" r="13" fill="#F6EFE7" stroke="#8B4513"/>
+            <circle cx="186" cy="28" r="13" fill="#F6EFE7" stroke="#8B4513"/>
+            <path d="M47,28 L97,28 M123,28 L173,28" stroke="#2C3E50" stroke-width="2"/>
+          </svg>
+          <h3>有步骤，画流程图</h3>
+          <p>Q/K/V 如何变成注意力输出。</p>
+        </article>
+        <article class="visual-card">
+          <svg viewBox="0 0 220 56" aria-label="结果卡示意">
+            <rect x="16" y="8" width="188" height="40" rx="7" fill="#FFFDF8" stroke="#D9D0C2"/>
+            <text x="38" y="34" font-size="13" fill="#2C3E50" font-weight="700">BLEU</text>
+            <text x="142" y="37" font-size="30" fill="#2C3E50" font-weight="700">28.4</text>
+          </svg>
+          <h3>有数字，画结果卡</h3>
+          <p>让结论先被看见，再读解释。</p>
+        </article>
+        <article class="visual-card">
+          <svg viewBox="0 0 220 56" aria-label="取舍图示意">
+            <rect x="16" y="10" width="82" height="36" rx="6" fill="#E7EDF3" stroke="#9AAABC"/>
+            <rect x="122" y="10" width="82" height="36" rx="6" fill="#F6EFE7" stroke="#D8B58E"/>
+            <text x="57" y="33" text-anchor="middle" font-size="12" fill="#2C3E50" font-weight="700">优势</text>
+            <text x="163" y="33" text-anchor="middle" font-size="12" fill="#8B4513" font-weight="700">代价</text>
+          </svg>
+          <h3>有利弊，画取舍图</h3>
+          <p>依赖路径更短，但长序列成本更高。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="output">
+    <div class="section-inner">
+      <div class="section-kicker">06 / Step 05 输出</div>
+      <h2>最终输出要能直接作为分享素材使用。</h2>
+      <p class="section-lede">下面是整理好的三张图片输出。桌面端完整展示，手机端横向滑动查看。</p>
+      <div class="output-gallery" aria-label="最终图片输出">
+        <article class="output-card">
+          <figure>
+            <img src="papers/attention-is-all-you-need/page-1.png" alt="输出第一页：问题背景与核心对比">
+            <figcaption class="output-caption">
+              <strong>输出 01 / 问题与对比</strong>
+              <span>建立问题背景，并用对比图说明核心变化。</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="output-card">
+          <figure>
+            <img src="papers/attention-is-all-you-need/page-2.png" alt="输出第二页：方法机制">
+            <figcaption class="output-caption">
+              <strong>输出 02 / 方法机制</strong>
+              <span>把抽象机制转成更容易讲解的视觉结构。</span>
+            </figcaption>
+          </figure>
+        </article>
+        <article class="output-card">
+          <figure>
+            <img src="papers/attention-is-all-you-need/page-3.png" alt="输出第三页：结果、局限与速览">
+            <figcaption class="output-caption">
+              <strong>输出 03 / 结果与速览</strong>
+              <span>用结果、局限和论文信息完成收束。</span>
+            </figcaption>
+          </figure>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section method" id="method">
+    <div class="section-inner">
+      <div class="section-kicker">07 / 分享课结论</div>
+      <h2>这个 case 讲的是 agent 协作，而不是 AI 一键生成。</h2>
+      <p class="section-lede">准确、简洁、高效的 AIUX 案例，需要展示输入、流程、判断和输出之间的关系。</p>
+      <div class="principles">
+        <div class="principle">
+          <strong>流程可见</strong>
+          <span>先让听众知道 agent 怎么工作，再展示具体内容。</span>
+        </div>
+        <div class="principle">
+          <strong>判断保留给人</strong>
+          <span>人决定深度、取舍、语气和传播目标。</span>
+        </div>
+        <div class="principle">
+          <strong>输出成为证据</strong>
+          <span>最终图片不是装饰，而是流程有效性的证明。</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="section-inner">
+    <div>Paper Card Case Study · Work with AI</div>
+    <div>Designed for AIUX / HCI sharing sessions</div>
+  </div>
+</footer>
+</body>
+</html>

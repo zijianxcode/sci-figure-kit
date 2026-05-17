@@ -1,0 +1,38 @@
+project: ""
+figure_id: ""
+title: ""
+use_case: "paper" # paper | presentation | teaching | other
+audience: ""
+
+task_sentence: ""
+
+figure_type: "" # research_framework | literature_structure | theory_matrix | coding_framework | method_flow | statistical_plot | comparison
+
+source_context: |
+  Paste only the directly relevant paragraphs here.
+
+required_elements:
+  - ""
+
+misreadings_to_avoid:
+  - ""
+
+text_budget:
+  primary_labels: 0
+  secondary_labels: 0
+  full_sentences_allowed: false
+
+visual_semantics:
+  main_flow: ""
+  auxiliary_relation: ""
+  feedback_or_dynamic: ""
+  highlight_color: ""
+
+caption_draft: ""
+
+review:
+  faithfulness: ""
+  conciseness: ""
+  readability: ""
+  aesthetics: ""
+
