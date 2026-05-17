@@ -2,11 +2,21 @@
 
 面向论文正文与学术报告的长期复用配图项目。当前版本从“教育 AI SCI 论文”四张图中抽离出来，目标是把学术图从“正文搬运”改成“结构提纯”。
 
+## 截图示例
+
+| 研究框架 | 文献定位 |
+| --- | --- |
+| ![研究问题与假设关系](examples/education_ai_sci/fig_research_framework.png) | ![文献线索汇聚与研究定位](examples/education_ai_sci/fig_literature_funnel.png) |
+
+| 理论适配 | 编码框架 |
+| --- | --- |
+| ![理论适配矩阵](examples/education_ai_sci/fig_theory_radar.png) | ![四节点三状态编码框架](examples/education_ai_sci/fig_framework_matrix.png) |
+
 ## 项目结构
 
 ```text
 sci-figure-kit/
-├── build_figures.py                 # 生成 HTML + PNG 的主脚本
+├── build_figures.py                 # 生成 HTML + SVG + PNG 的主脚本
 ├── docs/
 │   ├── figure_design_guide.md        # 论文图设计原则
 │   ├── project_scope.md              # 项目边界和长期维护原则
