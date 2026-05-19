@@ -19,11 +19,13 @@ sci-figure-kit/
 ├── build_figures.py                 # 生成 HTML + SVG + PNG 的主脚本
 ├── docs/
 │   ├── figure_design_guide.md        # 论文图设计原则
+│   ├── language_adaptation.md        # 中英文论文图适配规则
 │   ├── project_scope.md              # 项目边界和长期维护原则
 │   ├── review_checklist.md           # 出图前检查清单
 │   └── workflows.md                  # 论文图 / 报告图复用流程
 ├── examples/
-│   └── education_ai_sci/             # 当前论文四张图的已导出示例
+│   ├── education_ai_sci/             # 当前论文四张图的已导出示例
+│   └── education_ai_sci_en/          # 英文适配版示例
 ├── references/                       # 外部参考项目的重要文件
 │   ├── paperbanana/                  # 论文方法图生成流程、prompt、参考图
 │   ├── paper-card/                   # 学术内容视觉化和中文排版参考
@@ -51,6 +53,18 @@ outputs/current/
 python3 build_figures.py --output-dir outputs/test
 ```
 
+生成英文版：
+
+```bash
+python3 build_figures.py --language en --output-dir outputs/en
+```
+
+同时生成中英文版：
+
+```bash
+python3 build_figures.py --language both --output-dir outputs/bilingual
+```
+
 脚本会同时生成三种文件：
 
 - `.html`：浏览器预览和排版调试
@@ -63,6 +77,12 @@ python3 build_figures.py --output-dir outputs/test
 - `fig_literature_funnel`：文献线索汇聚与研究定位
 - `fig_theory_radar`：理论适配矩阵
 - `fig_framework_matrix`：四节点 × 三状态 + T 动态切换编码框架
+
+英文样例保存在：
+
+```text
+examples/education_ai_sci_en/
+```
 
 ## 当前设计原则
 
@@ -91,6 +111,12 @@ Figma 可编辑文件集中放在：
 figma_editable/
 ```
 
+英文版可编辑 SVG 会同步到：
+
+```text
+figma_editable/en/
+```
+
 使用方式：
 
 1. 打开 Figma。
@@ -103,6 +129,8 @@ figma_editable/
 - 论文或报告里最终嵌入仍建议用 PNG，避免不同软件对 SVG 字体渲染不一致。
 - Figma 内若字体替换，优先使用 PingFang SC / Noto Sans CJK SC / Arial。
 - 不要把 PNG 拖进 Figma 当作可编辑源文件，PNG 只能作为预览图。
+
+中英文适配规则见 [docs/language_adaptation.md](docs/language_adaptation.md)。
 
 ## 参考材料
 

@@ -1,0 +1,91 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#52616f"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#3c7a58"/>
+    </marker>
+    <style>
+      text { font-family: "Source Sans 3", "Inter", "Helvetica Neue", Arial, sans-serif; }
+      .small { fill: #6b7280; font-size: 18px; }
+      .label { fill: #1f2933; font-size: 23px; font-weight: 650; }
+      .micro { fill: #6b7280; font-size: 16px; }
+    </style>
+  </defs>
+  <rect width="100%" height="100%" fill="white"/>
+<rect x="90" y="58" width="260" height="92" rx="16" fill="#f5f7fa" stroke="#d6dee8" stroke-width="2"/>
+<text x="220" y="96" fill="#1f2933" font-size="21" font-weight="750" text-anchor="middle">Coding Unit</text>
+<text x="220" y="124" fill="#6b7280" font-size="14" font-weight="400" text-anchor="middle">Design-cognition decision node</text>
+<rect x="368" y="58" width="324" height="92" rx="16" fill="#eaf3fb" stroke="#3b6f9f" stroke-width="2.3"/>
+<text x="530" y="92" fill="#3b6f9f" font-size="29" font-weight="800" text-anchor="middle">H</text>
+<text x="530" y="120" fill="#1f2933" font-size="17" font-weight="750" text-anchor="middle">Human-led</text>
+<text x="530" y="140" fill="#6b7280" font-size="12" font-weight="400" text-anchor="middle">Learner retains key decisions</text>
+<rect x="728" y="58" width="324" height="92" rx="16" fill="#fff1e8" stroke="#b66a45" stroke-width="2.3"/>
+<text x="890" y="92" fill="#b66a45" font-size="29" font-weight="800" text-anchor="middle">A</text>
+<text x="890" y="120" fill="#1f2933" font-size="17" font-weight="750" text-anchor="middle">AI-output occupied</text>
+<text x="890" y="140" fill="#6b7280" font-size="12" font-weight="400" text-anchor="middle">AI output is adopted without explicit negotiation</text>
+<rect x="1088" y="58" width="324" height="92" rx="16" fill="#f2eefb" stroke="#6f5aa8" stroke-width="2.3"/>
+<text x="1250" y="92" fill="#6f5aa8" font-size="29" font-weight="800" text-anchor="middle">J</text>
+<text x="1250" y="120" fill="#1f2933" font-size="17" font-weight="750" text-anchor="middle">Jointly negotiated</text>
+<text x="1250" y="140" fill="#6b7280" font-size="12" font-weight="400" text-anchor="middle">Decision emerges through multi-turn negotiation</text>
+<rect x="90" y="162" width="242" height="101" rx="16" fill="#eaf3fb" stroke="#3b6f9f" stroke-width="2"/>
+<text x="118" y="205" fill="#3b6f9f" font-size="18" font-weight="800" text-anchor="start">1. Goal Setting</text>
+<text x="118" y="234" fill="#6b7280" font-size="13" font-weight="400" text-anchor="start">Define problem and goal</text>
+<line x1="210" y1="263" x2="210" y2="283" stroke="#8c98a6" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<rect x="368" y="162" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="530" y="208" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Learner defines goal</text>
+<text x="530" y="238" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Decision right stays human</text>
+<rect x="728" y="162" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="890" y="208" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">AI goal is adopted</text>
+<text x="890" y="238" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Behaviorally AI-led</text>
+<rect x="1088" y="162" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="1250" y="208" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Goal and constraints negotiated</text>
+<text x="1250" y="238" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Both rationales included</text>
+<rect x="90" y="287" width="242" height="101" rx="16" fill="#fbf4df" stroke="#9a7330" stroke-width="2"/>
+<text x="118" y="330" fill="#9a7330" font-size="18" font-weight="800" text-anchor="start">2. Strategy Choice</text>
+<text x="118" y="359" fill="#6b7280" font-size="13" font-weight="400" text-anchor="start">Select method and path</text>
+<line x1="210" y1="388" x2="210" y2="408" stroke="#8c98a6" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<rect x="368" y="287" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="530" y="333" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Learner selects path</text>
+<text x="530" y="363" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Decision right stays human</text>
+<rect x="728" y="287" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="890" y="333" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">AI path is followed</text>
+<text x="890" y="363" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Behaviorally AI-led</text>
+<rect x="1088" y="287" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="1250" y="333" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Options compared before choice</text>
+<text x="1250" y="363" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Both rationales included</text>
+<rect x="90" y="412" width="242" height="101" rx="16" fill="#fff1e8" stroke="#b66a45" stroke-width="2"/>
+<text x="118" y="455" fill="#b66a45" font-size="18" font-weight="800" text-anchor="start">3. Process Monitoring</text>
+<text x="118" y="484" fill="#6b7280" font-size="13" font-weight="400" text-anchor="start">Check drift and adjust</text>
+<line x1="210" y1="513" x2="210" y2="533" stroke="#8c98a6" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+<rect x="368" y="412" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="530" y="458" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Learner corrects drift</text>
+<text x="530" y="488" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Decision right stays human</text>
+<rect x="728" y="412" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="890" y="458" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">AI output drives progress</text>
+<text x="890" y="488" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Behaviorally AI-led</text>
+<rect x="1088" y="412" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="1250" y="458" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Joint checking and adjustment</text>
+<text x="1250" y="488" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Both rationales included</text>
+<rect x="90" y="537" width="242" height="101" rx="16" fill="#f2eefb" stroke="#6f5aa8" stroke-width="2"/>
+<text x="118" y="580" fill="#6f5aa8" font-size="18" font-weight="800" text-anchor="start">4. Outcome Evaluation</text>
+<text x="118" y="609" fill="#6b7280" font-size="13" font-weight="400" text-anchor="start">Judge output quality</text>
+<rect x="368" y="537" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="530" y="583" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Learner judges quality</text>
+<text x="530" y="613" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Decision right stays human</text>
+<rect x="728" y="537" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="890" y="583" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">AI criteria accepted</text>
+<text x="890" y="613" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Behaviorally AI-led</text>
+<rect x="1088" y="537" width="324" height="101" rx="14" fill="white" stroke="#d5dde7" stroke-width="1.8"/>
+<text x="1250" y="583" fill="#1f2933" font-size="16" font-weight="750" text-anchor="middle">Output jointly evaluated</text>
+<text x="1250" y="613" fill="#6b7280" font-size="13" font-weight="400" text-anchor="middle">Both rationales included</text>
+<rect x="120" y="720" width="1360" height="105" rx="20" fill="#fff0f2" stroke="#b85c6a" stroke-width="2.4" stroke-dasharray="12 8"/>
+<text x="170" y="763" fill="#b85c6a" font-size="32" font-weight="800" text-anchor="start">T</text>
+<text x="225" y="762" fill="#1f2933" font-size="23" font-weight="760" text-anchor="start">Dynamic Transition Indicator</text>
+<text x="225" y="793" fill="#1f2933" font-size="15" font-weight="500" text-anchor="start">Records the frequency and direction of H / A / J transitions within or across nodes; not a fourth parallel state</text>
+<path d="M1035 775 C1085 730 1145 730 1195 775" stroke="#b85c6a" stroke-width="2.5" fill="none" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<text x="1050" y="800" fill="#3b6f9f" font-size="20" font-weight="800" text-anchor="middle">H</text>
+<text x="1115" y="754" fill="#b66a45" font-size="20" font-weight="800" text-anchor="middle">A</text>
+<text x="1195" y="800" fill="#6f5aa8" font-size="20" font-weight="800" text-anchor="middle">J</text>
+</svg>

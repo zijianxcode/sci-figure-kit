@@ -1,6 +1,7 @@
 project: ""
 figure_id: ""
 title: ""
+language: "zh" # zh | en | both
 use_case: "paper" # paper | presentation | teaching | other
 audience: ""
 
@@ -35,4 +36,3 @@ review:
   conciseness: ""
   readability: ""
   aesthetics: ""
-
